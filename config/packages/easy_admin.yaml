@@ -1,0 +1,53 @@
+easy_admin:
+    entities:
+        Question:
+            class: App\Entity\Question
+            form:
+                fields:
+                    - name
+                    - category
+                    -
+                      property: answers
+                      type: collection
+                      type_options:
+                          entry_type: App\Form\AnswersEmbeddedForm
+                          allow_delete: true
+                          allow_add: true
+                          by_reference: false
+            list:
+                title: Questions
+                help: List of questions to compile test session template
+                actions: ['show']
+                fields:
+                    - id
+                    - name
+                    - category
+            search:
+                fields: ['id', 'name']
+
+        Answer:
+            class: App\Entity\Answer
+            form:
+                fields:
+                    - answer
+                    - isValid
+                    - question
+        Category:
+            class: App\Entity\Category
+            form:
+                fields:
+                    - name
+        TestSessionTemplate:
+            class: App\Entity\TestSessionTemplate
+            form:
+                fields:
+                    - name
+                    - timeLimit
+                    -
+                      property: items
+                      type: collection
+                      type_options:
+                          entry_type: App\Form\TestSessionItemsEmbeddedForm
+                          allow_delete: true
+                          allow_add: true
+                          by_reference: false
