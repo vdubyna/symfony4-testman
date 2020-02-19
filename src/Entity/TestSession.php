@@ -30,9 +30,29 @@ class TestSession
     private $email;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\OneToMany(targetEntity="App\Entity\TestSessionItem", mappedBy="testSession", orphanRemoval=true)
      */
-    private $executeAt;
+    private $testSessionItems;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $timeLimit;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $startedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $finishedAt;
+
+    public function __construct()
+    {
+        $this->testSessionItems = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -63,14 +83,69 @@ class TestSession
         return $this;
     }
 
-    public function getExecuteAt(): ?\DateTimeInterface
+    /**
+     * @return Collection|TestSessionItem[]
+     */
+    public function getTestSessionItems(): Collection
     {
-        return $this->executeAt;
+        return $this->testSessionItems;
     }
 
-    public function setExecuteAt(\DateTimeInterface $executeAt): self
+    public function addTestSessionItem(TestSessionItem $testSessionItem): self
     {
-        $this->executeAt = $executeAt;
+        if (!$this->testSessionItems->contains($testSessionItem)) {
+            $this->testSessionItems[] = $testSessionItem;
+            $testSessionItem->setTestSession($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTestSessionItem(TestSessionItem $testSessionItem): self
+    {
+        if ($this->testSessionItems->contains($testSessionItem)) {
+            $this->testSessionItems->removeElement($testSessionItem);
+            // set the owning side to null (unless already changed)
+            if ($testSessionItem->getTestSession() === $this) {
+                $testSessionItem->setTestSession(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTimeLimit(): ?int
+    {
+        return $this->timeLimit;
+    }
+
+    public function setTimeLimit(int $timeLimit): self
+    {
+        $this->timeLimit = $timeLimit;
+
+        return $this;
+    }
+
+    public function getStartedAt(): ?\DateTimeInterface
+    {
+        return $this->startedAt;
+    }
+
+    public function setStartedAt(?\DateTimeInterface $startedAt): self
+    {
+        $this->startedAt = $startedAt;
+
+        return $this;
+    }
+
+    public function getFinishedAt(): ?\DateTimeInterface
+    {
+        return $this->finishedAt;
+    }
+
+    public function setFinishedAt(?\DateTimeInterface $finishedAt): self
+    {
+        $this->finishedAt = $finishedAt;
 
         return $this;
     }

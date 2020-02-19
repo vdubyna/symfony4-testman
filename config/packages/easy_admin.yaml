@@ -6,6 +6,7 @@ easy_admin:
                 fields:
                     - name
                     - category
+                    - level
                     -
                       property: answers
                       type: collection
@@ -22,6 +23,7 @@ easy_admin:
                     - id
                     - name
                     - category
+                    - level
             search:
                 fields: ['id', 'name']
 
@@ -39,6 +41,9 @@ easy_admin:
                     - name
         TestSessionTemplate:
             class: App\Entity\TestSessionTemplate
+            list:
+                actions:
+                    - { name: 'exam_generate', type: 'route' }
             form:
                 fields:
                     - name
