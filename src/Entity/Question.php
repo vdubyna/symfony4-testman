@@ -38,6 +38,11 @@ class Question
      */
     private $level;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $questionType;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -116,6 +121,18 @@ class Question
     public function setLevel(int $level): self
     {
         $this->level = $level;
+
+        return $this;
+    }
+
+    public function getQuestionType(): ?string
+    {
+        return $this->questionType;
+    }
+
+    public function setQuestionType(string $questionType): self
+    {
+        $this->questionType = $questionType;
 
         return $this;
     }

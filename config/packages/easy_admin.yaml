@@ -7,6 +7,7 @@ easy_admin:
                     - name
                     - category
                     - level
+                    - questionType
                     -
                       property: answers
                       type: collection

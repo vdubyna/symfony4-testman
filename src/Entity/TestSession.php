@@ -49,6 +49,16 @@ class TestSession
      */
     private $finishedAt;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $uuid;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $questionsCount;
+
     public function __construct()
     {
         $this->testSessionItems = new ArrayCollection();
@@ -146,6 +156,30 @@ class TestSession
     public function setFinishedAt(?\DateTimeInterface $finishedAt): self
     {
         $this->finishedAt = $finishedAt;
+
+        return $this;
+    }
+
+    public function getUuid(): ?string
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(string $uuid): self
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    public function getQuestionsCount(): ?int
+    {
+        return $this->questionsCount;
+    }
+
+    public function setQuestionsCount(int $questionsCount): self
+    {
+        $this->questionsCount = $questionsCount;
 
         return $this;
     }

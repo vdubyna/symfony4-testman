@@ -23,14 +23,14 @@ class TestSessionItem
     private $testSession;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $question;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="text")
      */
-    private $answers = [];
+    private $answers;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -46,6 +46,21 @@ class TestSessionItem
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $result;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $questionType;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $position;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $submittedAnswer;
 
     public function getId(): ?int
     {
@@ -76,12 +91,12 @@ class TestSessionItem
         return $this;
     }
 
-    public function getAnswers(): ?array
+    public function getAnswers(): ?string
     {
         return $this->answers;
     }
 
-    public function setAnswers(array $answers): self
+    public function setAnswers(string $answers): self
     {
         $this->answers = $answers;
 
@@ -120,6 +135,42 @@ class TestSessionItem
     public function setResult(?string $result): self
     {
         $this->result = $result;
+
+        return $this;
+    }
+
+    public function getQuestionType(): ?string
+    {
+        return $this->questionType;
+    }
+
+    public function setQuestionType(string $questionType): self
+    {
+        $this->questionType = $questionType;
+
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): self
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function getSubmittedAnswer(): ?string
+    {
+        return $this->submittedAnswer;
+    }
+
+    public function setSubmittedAnswer(string $submittedAnswer): self
+    {
+        $this->submittedAnswer = $submittedAnswer;
 
         return $this;
     }
