@@ -43,6 +43,11 @@ class Question
      */
     private $questionType;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $answerUidType;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -133,6 +138,18 @@ class Question
     public function setQuestionType(string $questionType): self
     {
         $this->questionType = $questionType;
+
+        return $this;
+    }
+
+    public function getAnswerUidType(): ?string
+    {
+        return $this->answerUidType;
+    }
+
+    public function setAnswerUidType(string $answerUidType): self
+    {
+        $this->answerUidType = $answerUidType;
 
         return $this;
     }

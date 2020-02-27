@@ -7,6 +7,7 @@ easy_admin:
                     - name
                     - category
                     - level
+                    - answerUidType
                     - questionType
                     -
                       property: answers
@@ -44,11 +45,14 @@ easy_admin:
             class: App\Entity\TestSessionTemplate
             list:
                 actions:
-                    - { name: 'exam_generate', type: 'route' }
+                    -
+                      name: 'exam_generate'
+                      type: 'route'
             form:
                 fields:
                     - name
                     - timeLimit
+                    - cutoffSuccess
                     -
                       property: items
                       type: collection
@@ -57,3 +61,10 @@ easy_admin:
                           allow_delete: true
                           allow_add: true
                           by_reference: false
+
+
+        TestSession:
+            class: App\Entity\TestSession
+
+        TestSessionItem:
+            class: App\Entity\TestSessionItem

@@ -1,0 +1,10 @@
+{% extends 'content_base.html.twig' %}
+
+{% block content_body %}
+    Result: {{ result }}%
+    {% if passed == true %}
+        <p>Passed</p>
+    {% else %}
+        <p>Failed</p>
+    {% endif %}
+{% endblock %}

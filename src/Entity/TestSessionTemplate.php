@@ -38,6 +38,11 @@ class TestSessionTemplate
      */
     private $testSessions;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $cutoffSuccess;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -133,5 +138,22 @@ class TestSessionTemplate
         }
 
         return $this;
+    }
+
+    public function getCutoffSuccess(): ?float
+    {
+        return $this->cutoffSuccess;
+    }
+
+    public function setCutoffSuccess(?float $cutoffSuccess): self
+    {
+        $this->cutoffSuccess = $cutoffSuccess;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

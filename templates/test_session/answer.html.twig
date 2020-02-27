@@ -1,0 +1,31 @@
+{% extends 'content_base.html.twig' %}
+
+{% form_theme questionForm with [_self] %}
+
+{% block _form_answers_row %}
+    {{ form_label(form) }}
+    <ol type="1">
+        {%- for child in form %}
+            <li>
+                <input type="radio"
+                        {% if child.vars.value is defined %} value="{{ child.vars.value }}"{% endif %}
+                        {% if child.vars.checked %} checked="checked"{% endif %} />
+                <label class="form-check-label"
+                       for="{{ child.vars.id }}">{{ child.vars.label | raw }}</label>
+            </li>
+        {% endfor -%}
+    </ol>
+{% endblock _form_answers_row %}
+
+{% block _form_answers_entry_row %}
+    {{ dump(form) }}
+    {{ form_label(form.label) }}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block content_body %}
+    {{ form_start(questionForm) }}
+    {{ form_row(questionForm.answers) }}
+    {{ form_row(questionForm.submit) }}
+    {{ form_end(questionForm) }}
+{% endblock %}

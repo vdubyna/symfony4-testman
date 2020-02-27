@@ -1,0 +1,12 @@
+{% extends 'content_base.html.twig' %}
+
+{% block content_body %}
+    Review questions and edit them if needed.
+    If everything is good, submit answers
+    <ul>
+        {% for testSessionItem in testSession.getTestSessionItems %}
+            <li><a href="{{ path('exam_answer', {itemId: testSessionItem.getPosition, testSessionHash: testSession.getUuid}) }}">{{ testSessionItem.getSubmittedAnswer }}</a></li>
+        {% endfor %}
+    </ul>
+    <a class="btn btn-primary" href='{{ path('exam_complete', {testSessionHash: testSession.getUuid}) }}'>Submit answers</a>
+{% endblock %}

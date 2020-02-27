@@ -59,6 +59,16 @@ class TestSession
      */
     private $questionsCount;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $result;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $cutoffSuccess;
+
     public function __construct()
     {
         $this->testSessionItems = new ArrayCollection();
@@ -180,6 +190,30 @@ class TestSession
     public function setQuestionsCount(int $questionsCount): self
     {
         $this->questionsCount = $questionsCount;
+
+        return $this;
+    }
+
+    public function getResult(): ?float
+    {
+        return $this->result;
+    }
+
+    public function setResult(float $result): self
+    {
+        $this->result = $result;
+
+        return $this;
+    }
+
+    public function getCutoffSuccess(): ?float
+    {
+        return $this->cutoffSuccess;
+    }
+
+    public function setCutoffSuccess(?float $cutoffSuccess): self
+    {
+        $this->cutoffSuccess = $cutoffSuccess;
 
         return $this;
     }

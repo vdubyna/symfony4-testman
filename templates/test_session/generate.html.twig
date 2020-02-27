@@ -1,0 +1,6 @@
+{% extends 'content_base.html.twig' %}
+
+{% block content_body %}
+    Genearate Test session and start testing: {{ testSessionTemplate.getName }}
+    {{ form(testSessionTemplateGenerateForm) }}
+{% endblock %}
