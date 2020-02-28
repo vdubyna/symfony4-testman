@@ -33,7 +33,7 @@ easy_admin:
             class: App\Entity\Answer
             form:
                 fields:
-                    - answer
+                    - { property: 'answer', type: 'text_editor' }
                     - isValid
                     - question
         Category:

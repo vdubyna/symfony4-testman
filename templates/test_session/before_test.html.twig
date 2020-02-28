@@ -1,4 +1,4 @@
-{% extends 'content_base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block content_body %}
     Start Test Session ID: {{ testSession.getId }} {{ testSession.getTestSessionTemplate.getName }}
@@ -6,6 +6,8 @@
     {% for testSessionItem in testSession.getTestSessionItems %}
         <li>{{ testSessionItem.question }}</li>
     {% endfor %}
-    <a href='{{ path('exam_answer', {itemId: 0, testSessionHash: testSession.getUuid}) }}'>Go to first Question</a>
+
+    Please verify you are ready before
+    <a href='{{ path('exam_start_test', {testSessionHash: testSession.getUuid}) }}'>Start Exam</a>
 
 {% endblock %}

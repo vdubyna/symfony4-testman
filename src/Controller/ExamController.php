@@ -124,7 +124,7 @@ class ExamController extends AbstractController
             $em->persist($testSession);
             $em->flush();
 
-            return $this->redirectToRoute('exam_start', array(
+            return $this->redirectToRoute('exam_before_start', array(
                 'testSessionHash' => $testSession->getUuid()
             ));
 
@@ -137,24 +137,51 @@ class ExamController extends AbstractController
     }
 
     /**
-     * @Route(path = "/exam/start/{testSessionHash}", name = "exam_start")
+     * @Route(path = "/exam/before-start/{testSessionHash}", name = "exam_before_start")
      */
-    public function startAction(Request $request, $testSessionHash)
+    public function beforeTestAction(Request $request, $testSessionHash)
     {
+        // TODO if started at date is set - do the redirect to qustion
+
         $testSessionRepository = $this->getDoctrine()->getRepository(TestSession::class);
         /** @var TestSession $testSession */
         $testSession = $testSessionRepository->findOneBy(['uuid' => $testSessionHash]);
 
-        return $this->render('test_session/start.html.twig', [
+        return $this->render('test_session/before_test.html.twig', [
             'testSession' => $testSession
         ]);
     }
 
     /**
+     * @Route(path = "/exam/start/{testSessionHash}", name = "exam_start_test")
+     */
+    public function startTestAction(EntityManagerInterface $em, Request $request, $testSessionHash)
+    {
+        // TODO if started at date is set - do the redirect to answer
+        // TODO if finished at date is set - do the redirect to result page
+
+        $testSessionRepository = $this->getDoctrine()->getRepository(TestSession::class);
+        /** @var TestSession $testSession */
+        $testSession = $testSessionRepository->findOneBy(['uuid' => $testSessionHash]);
+        $testSession->setStartedAt(new \DateTime());
+
+        $em->persist($testSession);
+        $em->flush();
+
+        return $this->redirectToRoute('exam_answer', [
+            'itemId' => 0,
+            'testSessionHash' => $testSession->getUuid()
+        ]);
+    }
+
+    /**
      * @Route(path = "/exam/answer/{itemId}/{testSessionHash}", name = "exam_answer")
+     * @throws \Exception
      */
     public function answerAction(EntityManagerInterface $em, Request $request, $itemId, $testSessionHash)
     {
+        // TODO if started at date is not set - do the redirect to start
+
         // TODO if post method - save the answer.
         // TODO If results already recorded it should be shown on the form
 
@@ -228,8 +255,25 @@ class ExamController extends AbstractController
             }
         }
 
+        $currentTime = new \DateTime();
+        /** @var \DateTime $startedTime */
+        $startedTime = $testSession->getStartedAt();
+        $finishedTime = $startedTime->add(new \DateInterval('PT' . $testSession->getTimeLimit() . 'M'));
+        $secondsToFinish = $finishedTime->getTimestamp() - $currentTime->getTimestamp();
+
+        if ($secondsToFinish <= 0) {
+            $this->addFlash('success', 'Time is over, See the results below.');
+            return $this->redirectToRoute('exam_complete', [
+                'testSessionHash' => $testSession->getUuid()
+            ]);
+        }
         return $this->render('test_session/answer.html.twig', [
-            'questionForm' => $form->createView()
+            'questionForm' => $form->createView(),
+            'testSessionItem' => $testSessionItem,
+            'secondsFromStart' => $secondsToFinish,
+            'completeUrl' => $this->generateUrl('exam_complete', [
+                'testSessionHash' => $testSession->getUuid()
+            ]),
         ]);
     }
 
