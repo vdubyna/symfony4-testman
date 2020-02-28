@@ -8,7 +8,6 @@
         {%- for child in form %}
             <li>
                 <span>{{ child.vars.value }}.</span>
-{#                {{ dump(child) }}#}
                 <input type="radio" name="{{ child.vars.full_name }}"
                         {% if child.vars.value is defined %} value="{{ child.vars.value }}"{% endif %}
                         {% if child.vars.checked %} checked="checked"{% endif %} />
@@ -17,12 +16,6 @@
         {% endfor -%}
     </ul>
 {% endblock _form_answers_row %}
-
-{% block _form_answers_entry_row %}
-    {{ dump(form) }}
-    {{ form_label(form.label) }}
-    {{ form_widget(form) }}
-{% endblock %}
 
 {% block content_body %}
     {{ form_start(questionForm) }}

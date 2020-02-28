@@ -1,4 +1,12 @@
 easy_admin:
+    design:
+        form_theme:
+            - '@EasyAdmin/form/bootstrap_4.html.twig'
+        assets:
+            js:
+                - '/bundles/easyadmin/form-type-text-editor.js'
+            css:
+                - '/bundles/easyadmin/form-type-text-editor.css'
     entities:
         Question:
             class: App\Entity\Question
@@ -9,6 +17,7 @@ easy_admin:
                     - level
                     - answerUidType
                     - questionType
+                    - { type: 'section', label: 'Answers'}
                     -
                       property: answers
                       type: collection
@@ -65,6 +74,15 @@ easy_admin:
 
         TestSession:
             class: App\Entity\TestSession
+            list:
+                fields:
+                    - id
+                    - email
+                    - testSessionTemplate
+                    - startedAt
+                    - finishedAt
+                    - result
+                    - { property: 'test_session_url', type: 'url' }
 
         TestSessionItem:
             class: App\Entity\TestSessionItem

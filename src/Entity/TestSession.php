@@ -69,6 +69,11 @@ class TestSession
      */
     private $cutoffSuccess;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $testSessionUrl;
+
     public function __construct()
     {
         $this->testSessionItems = new ArrayCollection();
@@ -214,6 +219,18 @@ class TestSession
     public function setCutoffSuccess(?float $cutoffSuccess): self
     {
         $this->cutoffSuccess = $cutoffSuccess;
+
+        return $this;
+    }
+
+    public function getTestSessionUrl(): ?string
+    {
+        return $this->testSessionUrl;
+    }
+
+    public function setTestSessionUrl(?string $testSessionUrl): self
+    {
+        $this->testSessionUrl = $testSessionUrl;
 
         return $this;
     }

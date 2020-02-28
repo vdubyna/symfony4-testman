@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
@@ -41,7 +42,7 @@ class ExamController extends AbstractController
             'method' => 'POST',
             'action' => $this->generateUrl('exam_generate', [
                 'id' => $testSessionTemplate->getId()
-            ])
+            ], UrlGeneratorInterface::ABSOLUTE_URL)
         ]);
 
         $testSessionTemplateGenerateForm->handleRequest($request);
@@ -53,6 +54,9 @@ class ExamController extends AbstractController
             $testSession->setTimeLimit($testSessionTemplate->getTimeLimit());
             $testSession->setCutoffSuccess($testSessionTemplate->getCutoffSuccess());
             $testSession->setTestSessionTemplate($testSessionTemplate);
+            $testSession->setTestSessionUrl($this->generateUrl('exam_before_start', [
+                'testSessionHash' => $testSession->getUuid()
+            ]));
 
             // Generate questions based on template
             // Load ts items
