@@ -8,10 +8,18 @@
         {%- for child in form %}
             <li>
                 <span>{{ child.vars.value }}.</span>
+
+                {% if form.vars.multiple is same as(true) %}
+                <input type="checkbox" class="custom-checkbox" name="{{ child.vars.full_name }}"
+                        {% if child.vars.value is defined %} value="{{ child.vars.value }}"{% endif %}
+                        {% if child.vars.checked %} checked="checked"{% endif %} />
+                {% else %}
                 <input type="radio" name="{{ child.vars.full_name }}"
                         {% if child.vars.value is defined %} value="{{ child.vars.value }}"{% endif %}
                         {% if child.vars.checked %} checked="checked"{% endif %} />
+                {% endif %}
                 <label for="{{ child.vars.id }}">{{ child.vars.label | raw }}</label>
+
             </li>
         {% endfor -%}
     </ul>
@@ -20,6 +28,9 @@
 {% block content_body %}
     {{ form_start(questionForm) }}
     {{ form_row(questionForm.answers) }}
+    {% if questionForm.answers.vars.multiple is same as(true) %}
+        (Max {{ checkboxesLimit }} variants)
+    {% endif %}
     {{ form_row(questionForm.submit) }}
     {{ form_end(questionForm) }}
 {% endblock %}
@@ -28,7 +39,7 @@
     <script src="https://cdn.jsdelivr.net/npm/easytimer@1.1.1/dist/easytimer.min.js"></script>
     <script>
         var timer = new Timer();
-        timer.start({countdown: true, startValues: {seconds: {{ secondsFromStart }} }});
+        timer.start({countdown: true, startValues: {seconds: {{ secondsToFinish }} }});
         $('#countdownExample .values').html(timer.getTimeValues().toString());
         timer.addEventListener('secondsUpdated', function (e) {
             $('#countdownExample .values').html(timer.getTimeValues().toString());

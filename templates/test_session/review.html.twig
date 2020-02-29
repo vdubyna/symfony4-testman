@@ -10,3 +10,21 @@
     </ul>
     <a class="btn btn-primary" href='{{ path('exam_complete', {testSessionHash: testSession.getUuid}) }}'>Submit answers</a>
 {% endblock %}
+
+{% block body_javascript %}
+    <script src="https://cdn.jsdelivr.net/npm/easytimer@1.1.1/dist/easytimer.min.js"></script>
+    <script>
+        var timer = new Timer();
+        timer.start({countdown: true, startValues: {seconds: {{ secondsToFinish }} }});
+        $('#countdownExample .values').html(timer.getTimeValues().toString());
+        timer.addEventListener('secondsUpdated', function (e) {
+            $('#countdownExample .values').html(timer.getTimeValues().toString());
+        });
+        timer.addEventListener('targetAchieved', function (e) {
+            window.location.href  = '{{ completeUrl }}'
+        });
+    </script>
+    {{ parent() }}
+
+{% endblock %}
+

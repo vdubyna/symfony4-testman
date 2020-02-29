@@ -43,7 +43,7 @@ class TestSessionItem
     private $level;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $result;
 
@@ -127,12 +127,12 @@ class TestSessionItem
         return $this;
     }
 
-    public function getResult(): ?string
+    public function getResult(): ?int
     {
         return $this->result;
     }
 
-    public function setResult(?string $result): self
+    public function setResult(?int $result): self
     {
         $this->result = $result;
 
