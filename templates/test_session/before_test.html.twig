@@ -1,13 +1,19 @@
 {% extends 'base.html.twig' %}
 
+{% block content_title %}Start Test Session. User: {{ testSession.email }}{% endblock %}
+
+{% block global_actions %}
+    <a class="btn btn-primary" href='{{ path('exam_start_test', {testSessionHash: testSession.getUuid}) }}'>Start Exam</a>
+{% endblock %}
+
 {% block content_body %}
-    Start Test Session ID: {{ testSession.getId }} {{ testSession.getTestSessionTemplate.getName }}
-    Time limit: {{ testSession.getTimeLimit }} minutes
-    {% for testSessionItem in testSession.getTestSessionItems %}
-        <li>{{ testSessionItem.question }}</li>
-    {% endfor %}
-
-    Please verify you are ready before
-    <a href='{{ path('exam_start_test', {testSessionHash: testSession.getUuid}) }}'>Start Exam</a>
-
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h6>Test Session: {{ testSession.getTestSessionTemplate.getName }}</h6>
+                <h6>Time limit: {{ testSession.getTimeLimit }} minutes</h6>
+                <h6>Total: {{ testSession.questionsCount }} questions</h6>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -25,12 +25,15 @@
     </ul>
 {% endblock _form_answers_row %}
 
+{% block content_title %}Question #{{ testSessionItem.getPosition+1 }}{% endblock %}
+
+{% block global_actions %}
+    <a class="btn btn-warning" href='{{ path('exam_review', {testSessionHash: testSession.getUuid}) }}'>Review answers</a>
+{% endblock %}
+
 {% block content_body %}
     {{ form_start(questionForm) }}
     {{ form_row(questionForm.answers) }}
-    {% if questionForm.answers.vars.multiple is same as(true) %}
-        (Max {{ checkboxesLimit }} variants)
-    {% endif %}
     {{ form_row(questionForm.submit) }}
     {{ form_end(questionForm) }}
 {% endblock %}

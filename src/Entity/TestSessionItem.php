@@ -175,6 +175,20 @@ class TestSessionItem
         return $this;
     }
 
+    public function getSubmittedAnswersAsString()
+    {
+        $result = '';
+        if ($this->getSubmittedAnswer()) {
+            $answers = json_decode($this->getSubmittedAnswer(), true);
+            if (is_array($answers['answers'])) {
+                $result .= implode(', ', $answers['answers']);
+            } else {
+                $result .= $answers['answers'];
+            }
+        }
+        return $result;
+    }
+
     public function __toString()
     {
         return $this->getId() . " " . $this->getQuestion();

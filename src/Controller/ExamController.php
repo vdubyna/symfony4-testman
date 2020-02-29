@@ -282,7 +282,7 @@ class ExamController extends AbstractController
                              return $currentAnswer->getAnswer();
                          },
                      ])
-                     ->add('submit', SubmitType::class, ['label' => 'Next'])
+                     ->add('submit', SubmitType::class, ['label' => 'Next Question'])
                      ->getForm();
 
         $form->handleRequest($request);
@@ -308,6 +308,7 @@ class ExamController extends AbstractController
         return $this->render('test_session/answer.html.twig', [
             'questionForm'     => $form->createView(),
             'testSessionItem'  => $testSessionItem,
+            'testSession'  => $testSession,
             'secondsToFinish' => $secondsToFinish,
             'completeUrl'      => $this->generateUrl('exam_complete', [
                 'testSessionHash' => $testSession->getUuid(),
@@ -377,9 +378,9 @@ class ExamController extends AbstractController
             ]);
         }
         if ($testSession->getFinishedAt()) {
-            $this->addFlash('success', 'The results.');
             return $this->render('test_session/complete.html.twig', [
                 'result' => $testSession->getResult(),
+                'testSession' => $testSession,
                 'passed' => ($testSession->getCutoffSuccess() <= $testSession->getResult()),
             ]);
         }
@@ -407,6 +408,7 @@ class ExamController extends AbstractController
 
         return $this->render('test_session/complete.html.twig', [
             'result' => $result,
+            'testSession' => $testSession,
             'passed' => ($testSession->getCutoffSuccess() <= $result),
         ]);
     }

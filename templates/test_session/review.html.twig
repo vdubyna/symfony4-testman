@@ -1,14 +1,49 @@
 {% extends 'base.html.twig' %}
 
+{% block content_title %}Review questions and complete Test Session{% endblock %}
+
+{% block global_actions %}
+    <a class="btn btn-danger" href='{{ path('exam_complete', {testSessionHash: testSession.getUuid}) }}'>Submit answers</a>
+{% endblock %}
+
 {% block content_body %}
-    Review questions and edit them if needed.
-    If everything is good, submit answers
-    <ul>
-        {% for testSessionItem in testSession.getTestSessionItems %}
-            <li><a href="{{ path('exam_answer', {itemId: testSessionItem.getPosition, testSessionHash: testSession.getUuid}) }}">{{ testSessionItem.getSubmittedAnswer }}</a></li>
-        {% endfor %}
-    </ul>
-    <a class="btn btn-primary" href='{{ path('exam_complete', {testSessionHash: testSession.getUuid}) }}'>Submit answers</a>
+    <table class="table datagrid">
+        <thead>
+            <tr>
+                <th>
+                    <span>ID</span>
+                </th>
+                <th>
+                    <span>Question</span>
+                </th>
+                <th>
+                    <span>Answers</span>
+                </th>
+                <th>
+                    <span>Edit</span>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in testSession.getTestSessionItems %}
+                <tr>
+                    <td>
+                        {{ item.getPosition+1 }}
+                    </td>
+                    <td>
+                        {{ item.getQuestion }}
+                    </td>
+                    <td>
+                        {{ item.getSubmittedAnswersAsString }}
+                    </td>
+                    <td>
+                        <a href="{{ path('exam_answer', {itemId: item.getPosition, testSessionHash: testSession.getUuid}) }}">Edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block body_javascript %}
@@ -27,4 +62,7 @@
     {{ parent() }}
 
 {% endblock %}
+
+
+
 

@@ -61,9 +61,7 @@
 
                             <div id="header-logo">
                                 {% block header_logo %}
-                                    <a class="logo {{ easyadmin_config('site_name')|length > 14 ? 'logo-long' }}" title="{{ easyadmin_config('site_name')|striptags }}" href="{{ path('easyadmin') }}">
-                                        {{ easyadmin_config('site_name')|raw }}
-                                    </a>
+                                    Test Session Executor
                                 {% endblock header_logo %}
                             </div>
                         </nav>
@@ -128,17 +126,7 @@
                                         <div class="values"></div>
                                     </div>
                                 </li>
-                                <li class="header">Navigation</li>
-                                <li><a href="#">Review and Submit</a></li>
-                                <li><a href="/index.php/admin">Admin</a></li>
                             </ul>
-{#                            {% block main_menu_wrapper %}#}
-{#                                {{ include([#}
-{#                                    _entity_config is defined ? _entity_config.templates.menu,#}
-{#                                    easyadmin_config('design.templates.menu'),#}
-{#                                    '@EasyAdmin/default/menu.html.twig'#}
-{#                                ]) }}#}
-{#                            {% endblock main_menu_wrapper %}#}
                         </section>
 
                     {% endblock sidebar %}

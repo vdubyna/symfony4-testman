@@ -1,10 +1,16 @@
 {% extends 'base.html.twig' %}
 
+{% block content_title %}User: {{ testSession.getEmail }}{% endblock %}
+
 {% block content_body %}
-    Result: {{ result }}%
-    {% if passed == true %}
-        <p>Passed</p>
-    {% else %}
-        <p>Failed</p>
-    {% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h4>{% if passed == true %}<span class="badge badge-success">Passed</span>{% else %}<span class="badge badge-danger">Failed</span>{% endif %}</h4>
+            <h4>Result: {{ result }}%</h4>
+            <h6>Test Session: {{ testSession.testSessionTemplate.name }}</h6>
+            <h6>Finished at: {{ testSession.finishedAt|date("Y-m-d H:i:s") }}</h6>
+        </div>
+    </div>
+</div>
 {% endblock %}
