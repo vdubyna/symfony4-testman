@@ -27,117 +27,6 @@ use Symfony\Component\Serializer\Serializer;
 class ExamController extends AbstractController
 {
     /**
-     * @Route(path = "/exam/generate", name = "exam_generate")
-     */
-    public function generateAction(Request $request, EntityManagerInterface $em)
-    {
-        $testSessionTemplateRepository = $em->getRepository(TestSessionTemplate::class);
-
-        /** @var TestSessionTemplate $testSessionTemplate */
-        $testSessionTemplate = $testSessionTemplateRepository->find($request->get('id'));
-
-        $testSessionTemplateGenerateForm = $this->createForm(TestSessionTemplateGenerateFormType::class, null, [
-            'method' => 'POST',
-            'action' => $this->generateUrl('exam_generate', [
-                'id' => $testSessionTemplate->getId(),
-            ], UrlGeneratorInterface::ABSOLUTE_URL),
-        ]);
-
-        $testSessionTemplateGenerateForm->handleRequest($request);
-        if ($testSessionTemplateGenerateForm->isSubmitted() && $testSessionTemplateGenerateForm->isValid()) {
-            // Generate Test session
-            $testSession = new TestSession();
-            $testSession->setEmail($testSessionTemplateGenerateForm['email']->getData());
-            $testSession->setUuid(uuid_create(UUID_TYPE_RANDOM));
-            $testSession->setTimeLimit($testSessionTemplate->getTimeLimit());
-            $testSession->setCutoffSuccess($testSessionTemplate->getCutoffSuccess());
-            $testSession->setTestSessionTemplate($testSessionTemplate);
-            $testSession->setTestSessionUrl($this->generateUrl('exam_before_start', [
-                'testSessionHash' => $testSession->getUuid(),
-            ]));
-
-            // Generate questions based on template
-            // Load ts items
-            $questionRepository = $em->getRepository(Question::class);
-            $testSessionTemplateItemRepository = $em->getRepository(TestSessionTemplateItem::class);
-            $testSessionTemplateItems          = $testSessionTemplateItemRepository->findBy([
-                'testSessionTemplate' => $testSessionTemplate,
-            ]);
-            $testSessionQuestions              = [];
-            foreach ($testSessionTemplateItems as $testSessionTemplateItem) {
-                /** @var TestSessionTemplateItem $testSessionTemplateItem */
-                $questionsList      = $questionRepository->findBy([
-                    'category' => $testSessionTemplateItem->getCategory(),
-                    'level'    => $testSessionTemplateItem->getLevel(),
-                ]);
-                $questionIds        = (array)array_rand($questionsList, $testSessionTemplateItem->getCutoff());
-
-                $questions = array_map(function ($id) use ($questionsList) {
-                    return $questionsList[$id];
-                }, $questionIds);
-
-                array_push($testSessionQuestions, ...$questions);
-            }
-
-
-            $encoders    = [new JsonEncoder()];
-            $normalizers = [new GetSetMethodNormalizer()];
-            $serializer  = new Serializer($normalizers, $encoders);
-
-            shuffle($testSessionQuestions);
-
-            foreach ($testSessionQuestions as $position => $question) {
-                /** @var Question $question */
-                $testSessionItem = new TestSessionItem();
-
-                $answers = $question->getAnswers()->toArray();
-                shuffle($answers);
-                $tesSessionAnswers = [];
-                foreach ($answers as $key => $answer) {
-                    /** @var Answer $answer */
-                    $tesSessionAnswer = new TestSessionAnswer();
-                    $tesSessionAnswer->setIsValid($answer->getIsValid());
-                    $tesSessionAnswer->setAnswer($answer->getAnswer());
-                    if ($question->getAnswerUidType() === 'num') {
-                        $tesSessionAnswer->setId($key + 1);
-                    } else {
-                        $tesSessionAnswer->setId($this->numToAlpha($key));
-                    }
-                    $tesSessionAnswers[] = $tesSessionAnswer;
-                }
-
-                $jsonAnswers = $serializer->serialize(
-                    $tesSessionAnswers,
-                    'json',
-                    [AbstractNormalizer::IGNORED_ATTRIBUTES => ['question']]
-                );
-
-                $testSessionItem->setTestSession($testSession)
-                                ->setCategory($question->getCategory())
-                                ->setLevel($question->getLevel())
-                                ->setQuestion($question->getName())
-                                ->setQuestionType($question->getQuestionType())
-                                ->setPosition($position)
-                                ->setAnswers($jsonAnswers);
-                $em->persist($testSessionItem);
-            }
-            $testSession->setQuestionsCount(count($testSessionQuestions));
-
-            $em->persist($testSession);
-            $em->flush();
-
-            return $this->redirectToRoute('exam_before_start', array(
-                'testSessionHash' => $testSession->getUuid(),
-            ));
-        }
-
-        return $this->render('test_session/generate.html.twig', [
-            'testSessionTemplate'             => $testSessionTemplate,
-            'testSessionTemplateGenerateForm' => $testSessionTemplateGenerateForm->createView(),
-        ]);
-    }
-
-    /**
      * @Route(path = "/exam/before-start/{testSessionHash}", name = "exam_before_start")
      */
     public function beforeTestAction($testSessionHash, EntityManagerInterface $em)
@@ -411,16 +300,6 @@ class ExamController extends AbstractController
             'testSession' => $testSession,
             'passed' => ($testSession->getCutoffSuccess() <= $result),
         ]);
-    }
-
-    /**
-     * @param $num
-     *
-     * @return string
-     */
-    private function numToAlpha($num)
-    {
-        return chr(substr("000" . ($num + 65), -3));
     }
 
     /**

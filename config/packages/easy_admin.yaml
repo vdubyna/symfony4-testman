@@ -38,24 +38,13 @@ easy_admin:
             search:
                 fields: ['id', 'name']
 
-        Answer:
-            class: App\Entity\Answer
-            form:
-                fields:
-                    - { property: 'answer', type: 'text_editor' }
-                    - isValid
-                    - question
-        Category:
-            class: App\Entity\Category
-            form:
-                fields:
-                    - name
         TestSessionTemplate:
             class: App\Entity\TestSessionTemplate
             list:
                 actions:
                     -
-                      name: 'exam_generate'
+                      name: 'admin_exam_generate'
+                      label: 'Generate Test Session'
                       type: 'route'
             form:
                 fields:
@@ -71,7 +60,6 @@ easy_admin:
                           allow_add: true
                           by_reference: false
 
-
         TestSession:
             class: App\Entity\TestSession
             list:
@@ -83,6 +71,10 @@ easy_admin:
                     - finishedAt
                     - result
                     - { property: 'test_session_url', type: 'url' }
+                actions: ['show', '-new']
 
-        TestSessionItem:
-            class: App\Entity\TestSessionItem
+        Category:
+            class: App\Entity\Category
+            form:
+                fields:
+                    - name
