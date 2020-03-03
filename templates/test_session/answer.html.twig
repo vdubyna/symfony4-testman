@@ -31,6 +31,19 @@
     <a class="btn btn-warning" href='{{ path('exam_review', {testSessionHash: testSession.getUuid}) }}'>Review answers</a>
 {% endblock %}
 
+{% block sidebar %}
+    <section class="sidebar">
+        <ul class="sidebar-menu" data-widget="tree" data-animation-speed="250">
+            <li class="header">Timer</li>
+            <li>
+                <div id="countdownExample">
+                    <div class="values"></div>
+                </div>
+            </li>
+        </ul>
+    </section>
+{% endblock sidebar %}
+
 {% block content_body %}
     {{ form_start(questionForm) }}
     {{ form_row(questionForm.answers) }}

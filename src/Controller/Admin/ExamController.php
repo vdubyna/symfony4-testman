@@ -134,7 +134,7 @@ class ExamController extends AbstractController
 
         }
 
-        return $this->render('test_session/generate.html.twig', [
+        return $this->render('admin/generate.html.twig', [
             'testSessionTemplate'             => $testSessionTemplate,
             'form' => $testSessionTemplateGenerateForm->createView(),
         ]);

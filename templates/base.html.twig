@@ -120,15 +120,14 @@
                     {% block sidebar %}
                         <section class="sidebar">
                             <ul class="sidebar-menu" data-widget="tree" data-animation-speed="250">
-                                <li class="header">Timer</li>
+                                {% if app.user|default(false) == false %}
+                                <li class="header">Navigation</li>
                                 <li>
-                                    <div id="countdownExample">
-                                        <div class="values"></div>
-                                    </div>
+                                    <a href="{{ path('app_login') }}">Login</a>
                                 </li>
+                                {% endif %}
                             </ul>
                         </section>
-
                     {% endblock sidebar %}
                 </aside>
 

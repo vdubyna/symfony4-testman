@@ -1,5 +1,10 @@
 easy_admin:
     design:
+        menu:
+            - { entity: 'Question', label: 'Questions' }
+            - { entity: 'TestSessionTemplate', label: 'Test Session Template' }
+            - { entity: 'TestSession', label: 'Test Sessions' }
+            - { entity: 'Category', label: 'Categories' }
         form_theme:
             - '@EasyAdmin/form/bootstrap_4.html.twig'
         assets:
@@ -12,11 +17,37 @@ easy_admin:
             class: App\Entity\Question
             form:
                 fields:
-                    - name
+                    -
+                      property: name
+                      type: 'text'
                     - category
-                    - level
-                    - answerUidType
-                    - questionType
+                    -
+                      property: level
+                      type: 'choice'
+                      help: 'Complexity level from 1 to 6'
+                      type_options:
+                          mapped: true
+                          expanded: false
+                          multiple: false
+                          choices: { 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' }
+                    -
+                      property: answerUidType
+                      type: 'choice'
+                      help: 'Number or Alphabet list (1,2,3 vs A,B,C)'
+                      type_options:
+                          mapped: true
+                          expanded: false
+                          multiple: false
+                          choices: { 'Alphabetical': 'alpha', 'Numerical': 'num' }
+                    -
+                      property: questionType
+                      type: 'choice'
+                      help: 'Checkboxes or Radio buttons'
+                      type_options:
+                          mapped: true
+                          expanded: false
+                          multiple: false
+                          choices: { 'Checkboxes': 'checkboxes', 'Radio': 'radio' }
                     - { type: 'section', label: 'Answers'}
                     -
                       property: answers
@@ -41,16 +72,24 @@ easy_admin:
         TestSessionTemplate:
             class: App\Entity\TestSessionTemplate
             list:
+                title: 'Test Session templates'
                 actions:
                     -
                       name: 'admin_exam_generate'
                       label: 'Generate Test Session'
                       type: 'route'
             form:
+                title: 'Create Test session template'
                 fields:
                     - name
-                    - timeLimit
-                    - cutoffSuccess
+                    -
+                      property: timeLimit
+                      type: 'integer'
+                      help: 'Time limit per Test Session in minutes'
+                    -
+                      property: cutoffSuccess
+                      type: 'integer'
+                      help: 'Percent value to pass exam (from 1 to 100)'
                     -
                       property: items
                       type: collection
