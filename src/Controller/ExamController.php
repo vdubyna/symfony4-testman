@@ -2,26 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\Answer;
-use App\Entity\Question;
 use App\Entity\TestSession;
 use App\Entity\TestSessionAnswer;
 use App\Entity\TestSessionItem;
-use App\Entity\TestSessionTemplate;
-use App\Entity\TestSessionTemplateItem;
-use App\Form\TestSessionTemplateGenerateFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 class ExamController extends AbstractController

@@ -70,15 +70,21 @@ class ExamController extends AbstractController
                     'category' => $testSessionTemplateItem->getCategory(),
                     'level'    => $testSessionTemplateItem->getLevel(),
                 ]);
-                $questionIds        = (array)array_rand($questionsList, $testSessionTemplateItem->getCutoff());
-
+                if (empty($questionsList)) {
+                    $this->addFlash('danger', 'There is no questions to generate test session.');
+                    return $this->redirectToRoute('easyadmin', array(
+                        'action' => 'list',
+                        'entity' => 'TestSessionTemplate',
+                        'id' => $testSessionTemplate->getId()
+                    ));
+                }
+                $questionIds = (array)array_rand($questionsList, $testSessionTemplateItem->getCutoff());
                 $questions = array_map(function ($id) use ($questionsList) {
                     return $questionsList[$id];
                 }, $questionIds);
 
                 array_push($testSessionQuestions, ...$questions);
             }
-
 
             $encoders    = [new JsonEncoder()];
             $normalizers = [new GetSetMethodNormalizer()];
