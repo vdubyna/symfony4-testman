@@ -90,6 +90,7 @@ easy_admin:
                       property: cutoffSuccess
                       type: 'integer'
                       help: 'Percent value to pass exam (from 1 to 100)'
+                    - { type: 'section', label: 'Template Items'}
                     -
                       property: items
                       type: collection
@@ -109,9 +110,10 @@ easy_admin:
                     - startedAt
                     - finishedAt
                     - result
-                    - { property: 'test_session_url', type: 'url' }
-                actions: ['show', '-new']
-
+                    - cutoffSuccess
+                    - timeLimit
+                    - { property: 'test_session_url', type: 'url', label: 'Link'}
+                actions: ['show', '-new', '-edit']
         Category:
             class: App\Entity\Category
             form:

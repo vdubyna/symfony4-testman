@@ -4,19 +4,21 @@
 
 {% block _form_answers_row %}
     {{ form_label(form) }}
-    <ul>
+    <ul style="list-style-type:none">
         {%- for child in form %}
             <li>
-                <span>{{ child.vars.value }}.</span>
+                <span style="vertical-align: top">{{ child.vars.value }}.</span>
 
                 {% if form.vars.multiple is same as(true) %}
                 <input type="checkbox" class="custom-checkbox" name="{{ child.vars.full_name }}"
                         {% if child.vars.value is defined %} value="{{ child.vars.value }}"{% endif %}
-                        {% if child.vars.checked %} checked="checked"{% endif %} />
+                        {% if child.vars.checked %} checked="checked"{% endif %}
+                       style="vertical-align: top;margin-top: 3px;margin-left: 5px;margin-right: 10px;" />
                 {% else %}
                 <input type="radio" name="{{ child.vars.full_name }}"
                         {% if child.vars.value is defined %} value="{{ child.vars.value }}"{% endif %}
-                        {% if child.vars.checked %} checked="checked"{% endif %} />
+                        {% if child.vars.checked %} checked="checked"{% endif %}
+                       style="vertical-align: top;margin-top: 3px;margin-left: 5px;margin-right: 10px;" />
                 {% endif %}
                 <label for="{{ child.vars.id }}">{{ child.vars.label | raw }}</label>
 
